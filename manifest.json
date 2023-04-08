@@ -1,0 +1,18 @@
+{
+  "name": "ChangeGPT",
+  "description":"An extension for changing your ChatGPT avatar locally / 改变 ChatGPT 对话中你的头像",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ChangeGPT"
+  },
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": ["https://chat.openai.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://chat.openai.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

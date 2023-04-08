@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>ChangeGPT</title>
+    <style>
+      body {
+        margin: 10px;
+        font-family: Arial, sans-serif;
+        width: 300px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .preview {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+
+        display: none;
+      }
+
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        /* float: right; */
+        /* margin: 10px; */
+        margin-bottom: 10px;
+      }
+
+      button:hover {
+        background-color: #3e8e41;
+      }
+
+      button:disabled {
+        background-color: #7f7f7f;
+      }
+
+      .preview {
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ChangeGPT</h1>
+    <input type="text" id="image-url" placeholder="粘贴头像图片链接">
+    <button disabled id="save-button">保存并替换</button>
+    <img alt="图片加载失败，请重新粘贴图片链接" class="preview" id="image-preview" />
+    <script src="popup.js"></script>
+  </body>
+</html>
