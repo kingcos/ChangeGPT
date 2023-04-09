@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <title>ChangeGPT</title>
     <style>
+      .tab {
+        display: none;
+      }
+      .tab.active {
+        display: block;
+      }
+      .tab-buttons {
+        display: flex;
+        flex-direction: row;
+      }
+      .tab-button {
+        /* margin-right: 10px; */
+        padding: 5px 10px;
+        border: 0.5px solid #ddd;
+        background-color: #f5f5f5;
+        cursor: pointer;
+      }
+      .tab-button.active {
+        background-color: #fff;
+        border-bottom: 1px solid #fff;
+      }
+
       body {
         margin: 10px;
         font-family: Arial, sans-serif;
@@ -17,6 +39,16 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
+      }
+
+      textarea {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        resize: none;
       }
 
       .preview {
@@ -51,16 +83,16 @@
         background-color: #7f7f7f;
       }
 
-      #reset-button {
+      .reset-button {
         float: right;
         background-color: #1970ea;
       }
 
-      #reset-button:hover {
+      .reset-button:hover {
         background-color: #165fc5;
       }
 
-      #reset-button:disabled {
+      .reset-button:disabled {
         background-color: #7f7f7f;
       }
 
@@ -77,15 +109,48 @@
         color: #7f7f7f;
       }
 
+      /* tab 2 */
+      #copy-button:hover {
+        background-color: #3e8e41;
+      }
+
+      #copy-button:disabled {
+        background-color: #7f7f7f;
+      }
+
+      #tab2-tips {
+        color: #7f7f7f;
+      }
     </style>
   </head>
   <body>
     <h1>ChangeGPT</h1>
-    <p id="tips"></p>
-    <input type="text" id="image-url" placeholder="粘贴头像图片链接">
-    <button disabled id="save-button">保存并替换</button>
-    <button disabled id="reset-button">重置</button>
-    <img alt="图片加载失败，请重新粘贴图片链接" class="preview" id="image-preview" />
+
+    <div class="tabs">
+      <div class="tab-buttons">
+        <div class="tab-button active" data-target="tab1">替换头像</div>
+        <div class="tab-button" data-target="tab2">最后对话</div>
+      </div>
+      <div class="tab-content">
+        <div class="tab tab1 active">
+          <!-- 第一个面板的内容 -->
+          <p id="tips"></p>
+          <input type="text" id="image-url" placeholder="粘贴头像图片链接">
+          <button disabled id="save-button">保存并替换</button>
+          <button disabled class="reset-button" id="reset-button">重置</button>
+          <img alt="图片加载失败，请重新粘贴图片链接" class="preview" id="image-preview" />
+        </div>
+        <div class="tab tab2">
+          <!-- 第二个面板的内容 -->
+          <p id="tab2-tips"></p>
+          <!-- <input type="text" id="last-user-message" placeholder="自动帮你保存最后一次发送的内容" disabled> -->
+          <textarea type="text" id="last-user-message" placeholder="自动帮你保存最后一次发送的内容" disabled></textarea>
+          <button disabled id="copy-button">复制</button>
+          <button disabled class="reset-button" id="tab2-reset-button">重置</button>
+        </div>
+      </div>
+    </div>
+
     <p class="author">by <a href="https://kingcos.me">kingcos.me</a></p>
     <script src="popup.js"></script>
   </body>

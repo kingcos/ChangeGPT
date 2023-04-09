@@ -7,7 +7,7 @@
     "default_popup": "popup.html",
     "default_title": "ChangeGPT"
   },
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "clipboardWrite"],
   "host_permissions": ["https://chat.openai.com/*"],
   "content_scripts": [
     {
