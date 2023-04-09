@@ -57,7 +57,13 @@ saveButton.addEventListener('click', () => {
 
     if (imageUrlInput.value) {
       message.imageUrl = imageUrlInput.value;
-      chrome.tabs.sendMessage(tabs[0].id, message);
+      if (tabs[0].url.startsWith("https://chat.openai.com")) {
+        chrome.tabs.sendMessage(tabs[0].id, message);
+      }
+      
+      chrome.storage.local.set({ url: message.imageUrl }, () => {
+        console.log(`${message.imageUrl}`);
+      });
     }
   });
 });

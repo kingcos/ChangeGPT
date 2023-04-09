@@ -1,7 +1,7 @@
 {
   "name": "ChangeGPT",
   "description":"An extension for changing your ChatGPT avatar locally / 更换 ChatGPT 对话中你的头像",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 3,
   "action": {
     "default_popup": "popup.html",
