@@ -18,9 +18,7 @@ function init() {
     }
 
     const images = document.querySelectorAll('img.rounded-sm');
-    for (let i = 0; i < images.length; i++) {
-      replaceImageSrc(images[i], data.url);
-    }
+    images.forEach(image => replaceImageSrc(image, data.url));
 
     observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
@@ -59,19 +57,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       message.imageUrl = originUrl;
     }
 
-    for (let i = 0; i < images.length; i++) {
-      // 保存原有的链接
-      if (!originUrl) {
-        originUrl = images[i].src;
-      }
-
-      replaceImageSrc(images[i], message.imageUrl);
-    }
-
-    // 缓存
-    chrome.storage.local.set({ ori: originUrl }, () => {
-      console.log(`${originUrl}`);
-    });
+    images.forEach(image => replaceImageSrc(image, message.imageUrl));
 
     if (observer) {
       observer.disconnect();
@@ -102,6 +88,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 function replaceImageSrc(img, url) {
+  // 保存原有的链接
+  if (!originUrl && img.src.startsWith("https://chat.openai.com")) {
+    originUrl = img.src;
+
+    // 缓存
+    chrome.storage.local.set({ ori: originUrl }, () => {
+      console.log(`${originUrl}`);
+    });
+  }
+
+  if (url === originUrl) {
+    // 清除缓存
+    chrome.storage.local.set({ ori: "" }, () => {});
+  }
+
   img.src = url;
   // "xxx 1x, xxx 2x"
   img.srcset = `${url} 1x, ${url} 2x`;

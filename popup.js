@@ -73,8 +73,10 @@ function changeAvatar(url) {
 
     if (url) {
       tipsSpan.innerText = "替换成功！";
+      resetButton.disabled = false;
     } else {
       tipsSpan.innerText = "恢复成功！";
+      resetButton.disabled = true;
     }
     tipsSpan.style.color = "#7f7f7f";
   });
@@ -103,6 +105,8 @@ resetButton.addEventListener('click', () => {
 
     if (data.ori) {
       resetButton.disabled = false;
+    } else {
+      resetButton.disabled = true;
     }
   });
 // });
