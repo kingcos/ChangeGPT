@@ -39,34 +39,17 @@ var observer, originUrl, lastUserMessageObserver;
 
   lastUserMessageObserver = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
-      if (mutation.addedNodes && mutation.addedNodes.length > 0) {
-        mutation.addedNodes.forEach(addedNode => {
-          if (addedNode.nodeType === Node.ELEMENT_NODE) {
-            const items = addedNode.querySelectorAll("div.items-start");
-            var message = null;
-            items.forEach(item => {
-              if (item.hasChildNodes() && item.childNodes[0].nodeType === 3) {
-                // TEXT Node
-                message = item.innerText;
-              }
-            })
-            if (message) {
-              // 缓存
-              chrome.storage.local.set({ lastUserMessage: message }, () => {
-                console.log(`${message}`);
-              });
-            }
-          }
+      if (mutation.type === "attributes"
+      && mutation.target.classList.contains("text-red-500")) {
+        const items = document.querySelectorAll("div.items-start");
+        const message = items[items.length - 2].innerText;
+        const title = document.querySelectorAll("h1")[0].innerText;
+        const link = location.href;
+
+        chrome.storage.local.set({ lastUserMessage: message, lastTitle: title, lastLink: link }, () => {
+          console.log(`${message}, ${title}, ${link}`);
         });
       }
-
-      // if (mutation.type === "attributes"
-      // && mutation.target.type === "textarea"
-      // && mutation.target.innerHTML) {
-      //   chrome.storage.local.set({ lastUserMessage: mutation.target.innerHTML }, () => {
-      //     console.log(`${mutation.target.innerHTML}`);
-      //   });
-      // }
     });
   });
 

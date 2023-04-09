@@ -10,6 +10,7 @@ const lastUserMessageInput = document.getElementById("last-user-message");
 const copyButton = document.getElementById("copy-button");
 const tab2ResetButton = document.getElementById("tab2-reset-button");
 const tab2TipsSpan = document.getElementById("tab2-tips");
+const tab2TipsSpan2 = document.getElementById("tab2-tips2");
 
 // 获取 tab 相关的元素
 const tabButtons = document.querySelectorAll('.tab-button');
@@ -74,13 +75,14 @@ copyButton.addEventListener('click', () => {
 tab2ResetButton.addEventListener('click', () => {
   copyButton.disabled = true;
   lastUserMessageInput.value = "";
+  tab2TipsSpan2.style.display = "none";
   chrome.storage.local.set({ lastUserMessage: "" }, () => {});
   tab2TipsSpan.innerText = "重置成功！";
 });
 
 // 弹出页面后执行
 (function () {
-  chrome.storage.local.get(["url", "ori", "lastUserMessage"], (data) => {
+  chrome.storage.local.get(["url", "ori", "lastUserMessage", "lastTitle", "lastLink"], (data) => {
     console.log("local: ", data.url, data.ori, data.lastUserMessage);
     
     if (data.url) {
@@ -100,9 +102,16 @@ tab2ResetButton.addEventListener('click', () => {
       lastUserMessageInput.value = data.lastUserMessage;
       copyButton.disabled = false;
       tab2ResetButton.disabled = false;
+
+      if (data.lastLink && data.lastTitle) {
+        tab2TipsSpan2.innerText = "· 标题：" + data.lastTitle + "\n· 链接：" + data.lastLink;
+        tab2TipsSpan2.style.display = "block";
+      }
     } else {
       copyButton.disabled = true;
       tab2ResetButton.disabled = true;
+      tab2TipsSpan2.innerText = ""
+      tab2TipsSpan2.style.display = "none";
     }
   });
 })();

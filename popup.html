@@ -121,6 +121,12 @@
       #tab2-tips {
         color: #7f7f7f;
       }
+
+      #tab2-tips2 {
+        display: none;
+        color: #7f7f7f;
+        margin-top: 0px;
+      }
     </style>
   </head>
   <body>
@@ -129,7 +135,7 @@
     <div class="tabs">
       <div class="tab-buttons">
         <div class="tab-button active" data-target="tab1">替换头像</div>
-        <div class="tab-button" data-target="tab2">最后对话</div>
+        <div class="tab-button" data-target="tab2">出错对话</div>
       </div>
       <div class="tab-content">
         <div class="tab tab1 active">
@@ -144,7 +150,8 @@
           <!-- 第二个面板的内容 -->
           <p id="tab2-tips"></p>
           <!-- <input type="text" id="last-user-message" placeholder="自动帮你保存最后一次发送的内容" disabled> -->
-          <textarea type="text" id="last-user-message" placeholder="自动帮你保存最后一次发送的内容" disabled></textarea>
+          <textarea type="text" id="last-user-message" placeholder="自动帮你保存出错时最后一次发送的内容，防止在页面刷新后对话内容丢失。" disabled></textarea>
+          <p id="tab2-tips2"></p>
           <button disabled id="copy-button">复制</button>
           <button disabled class="reset-button" id="tab2-reset-button">重置</button>
         </div>
