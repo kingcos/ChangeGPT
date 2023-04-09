@@ -4,25 +4,14 @@ var observer, originUrl;
 
 setTimeout(init, 500);
 
-// chrome.storage.sync.clear(function() {
-//   console.log("Cache cleared successfully.");
-// });
-
 function init() {
   // 读取缓存
-  chrome.storage.local.get("ori", (data) => {
-    console.log(data.ori);
+  chrome.storage.local.get(["url", "ori"], (data) => {
+    console.log("init local: ", data.url, data.ori);
 
-    if (!data.ori) {
-      return;
+    if (data.ori) {
+      originUrl = data.ori;
     }
-
-    originUrl = data.ori;
-  });
-
-
-  chrome.storage.local.get("url", (data) => {
-    console.log(data.url);
 
     if (!data.url) {
       return;
@@ -62,29 +51,38 @@ function init() {
 
 // 监听用户保存，更改当前头像
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  const isOri = !message.imageUrl;
   if (message.type === 'replace-image') {
     const images = document.querySelectorAll('img.rounded-sm');
-    for (let i = 0; i < images.length; i++) {
-      if (message.imageUrl) {
-        // 保存原有的链接
-        if (!originUrl) {
-          originUrl = images[i].src;
-        }
 
-        replaceImageSrc(images[i], message.imageUrl);
+    if (isOri) {
+      message.imageUrl = originUrl;
+    }
+
+    for (let i = 0; i < images.length; i++) {
+      // 保存原有的链接
+      if (!originUrl) {
+        originUrl = images[i].src;
       }
+
+      replaceImageSrc(images[i], message.imageUrl);
     }
 
     // 缓存
-    chrome.storage.local.set({ ori: originUrl, url: message.imageUrl }, () => {
-      console.log(`${{ ori: originUrl, url: message.imageUrl }}`);
+    chrome.storage.local.set({ ori: originUrl }, () => {
+      console.log(`${originUrl}`);
     });
 
-    // 开启监听
     if (observer) {
       observer.disconnect();
     }
 
+    if (isOri) {
+      // 不再监听
+      return;
+    }
+    
+    // 开启监听
     observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if (mutation.addedNodes && mutation.addedNodes.length > 0) {

@@ -2,6 +2,8 @@
 const imageUrlInput = document.getElementById("image-url");
 const imagePreview = document.getElementById("image-preview");
 const saveButton = document.getElementById("save-button");
+const resetButton = document.getElementById("reset-button");
+const tipsSpan = document.getElementById("tips");
 
 // 节流
 function throttle(func, delay) {
@@ -39,6 +41,7 @@ imageUrlInput.addEventListener("input", debounce(function() {
     saveButton.disabled = false;
   } else {
     imagePreview.style.display = "none";
+    // saveButton.innerText = "恢复默认头像";
     saveButton.disabled = true;
   }
   
@@ -46,41 +49,61 @@ imageUrlInput.addEventListener("input", debounce(function() {
   imagePreview.src = imageUrl;
 }, 500));
 
-// 替换逻辑
-saveButton.addEventListener('click', () => {
+function changeAvatar(url) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const message = {
       type: 'replace-image',
       imageDataUrl: null,
       imageUrl: null
     };
+    
+    message.imageUrl = url;
 
-    if (imageUrlInput.value) {
-      message.imageUrl = imageUrlInput.value;
-      if (tabs[0].url.startsWith("https://chat.openai.com")) {
-        chrome.tabs.sendMessage(tabs[0].id, message);
-      }
-      
-      chrome.storage.local.set({ url: message.imageUrl }, () => {
-        console.log(`${message.imageUrl}`);
-      });
+    chrome.storage.local.set({ url }, () => {
+      console.log(`${message.imageUrl}`);
+    });
+
+    if (!tabs[0].url.startsWith("https://chat.openai.com")) {
+      tipsSpan.innerText = "请切换至 ChatGPT Tab 下再替换哟";
+      tipsSpan.style.color = "red";
+      return;
     }
+
+    chrome.tabs.sendMessage(tabs[0].id, message);
+
+    if (url) {
+      tipsSpan.innerText = "替换成功！";
+    } else {
+      tipsSpan.innerText = "恢复成功！";
+    }
+    tipsSpan.style.color = "#7f7f7f";
   });
+}
+
+// 替换逻辑
+saveButton.addEventListener('click', () => {
+  changeAvatar(imageUrlInput.value);
+});
+
+resetButton.addEventListener('click', () => {
+  changeAvatar("");
 });
 
 // document.addEventListener('DOMContentLoaded', function() {
   // 读取缓存
-  chrome.storage.local.get("url", (data) => {
-    console.log(data.url);
+  chrome.storage.local.get(["url", "ori"], (data) => {
+    console.log("local: ", data.url, data.ori);
     
-    if (!data.url) {
-      return;
+    if (data.url) {
+      imageUrlInput.value = data.url;
+      imagePreview.src = data.url;
+      imagePreview.style.display = "block";
+      saveButton.disabled = false;
     }
 
-    imageUrlInput.value = data.url;
-    imagePreview.src = data.url;
-    imagePreview.style.display = "block";
-    saveButton.disabled = false;
+    if (data.ori) {
+      resetButton.disabled = false;
+    }
   });
 // });
 
