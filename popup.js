@@ -103,8 +103,12 @@ tab2ResetButton.addEventListener('click', () => {
       copyButton.disabled = false;
       tab2ResetButton.disabled = false;
 
-      if (data.lastLink && data.lastTitle) {
-        tab2TipsSpan2.innerText = "· 标题：" + data.lastTitle + "\n· 链接：" + data.lastLink;
+      if (data.lastLink) {
+        let innerText = "· 链接：" + data.lastLink;
+        if (data.lastTitle) {
+          innerText =  "· 标题：" + data.lastTitle + "\n" + innerText;
+        }
+        tab2TipsSpan2.innerText = innerText;
         tab2TipsSpan2.style.display = "block";
       }
     } else {

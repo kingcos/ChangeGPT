@@ -43,7 +43,7 @@ var observer, originUrl, lastUserMessageObserver;
       && mutation.target.classList.contains("text-red-500")) {
         const items = document.querySelectorAll("div.items-start");
         const message = items[items.length - 2].innerText;
-        const title = document.querySelectorAll("h1")[0].innerText;
+        const title = document.querySelectorAll("h1")[0]?.innerText ?? document.title;
         const link = location.href;
 
         chrome.storage.local.set({ lastUserMessage: message, lastTitle: title, lastLink: link }, () => {
