@@ -1,6 +1,6 @@
 {
   "name": "ChangeGPT",
-  "description":"An extension for changing your ChatGPT avatar locally / 更换 ChatGPT 对话中你的头像",
+  "description":"An open-sourced Chrome extension for changing your ChatGPT experience. / 一个改变 ChatGPT 体验的开源 Chrome 浏览器插件。",
   "version": "2.0",
   "manifest_version": 3,
   "action": {

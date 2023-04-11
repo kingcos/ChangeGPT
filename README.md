@@ -2,6 +2,6 @@
 
 <img src="https://raw.githubusercontent.com/kingcos/ChangeGPT/main/icons/changegpt-128.png" width=64px>
 
-A Chrome extension for changing your ChatGPT avatar locally.  
+An open-sourced Chrome extension for changing your ChatGPT experience.
 
-一个本地更换 ChatGPT 对话头像的 Chrome 浏览器插件。
+一个改变 ChatGPT 体验的开源 Chrome 浏览器插件。
